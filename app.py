@@ -6,28 +6,15 @@ app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
 with open('secret.json', 'r') as secrets:
     wdir = json.load(secrets)['workingDir']
-    app.config['path'] = './' + wdir + 'static/'
-    
+    app.config['path'] =  os.path.dirname(os.path.realpath(__file__)) + '/static/'
+    print(app.config['path'])
+
 
 @app.route('/podcast-text/<nb>')
 def getPodcastText(nb):
     with open(app.config['path'] + 'strings.json', 'r') as archivo:
         datos = json.load(archivo)
         return jsonify({'message': datos['podcast'+ nb]})
-
-
-@app.route('/episodes-text')
-def getEpisodesText():
-    with open(app.config['path'] + 'strings.json', 'r') as archivo:
-        datos = json.load(archivo)
-        return jsonify({'message': datos['episodes']})
-
-
-@app.route('/tales-text')
-def getTalesText():
-    with open(app.config['path'] + 'strings.json', 'r') as archivo:
-        datos = json.load(archivo)
-        return jsonify({'message': datos['tales']})
 
 
 @app.route('/pdf/<filename>', methods=['GET'])
@@ -66,4 +53,4 @@ def getAboutText(nb):
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
