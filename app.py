@@ -4,10 +4,7 @@ import os, json, base64
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
-with open('secret.json', 'r') as secrets:
-    wdir = json.load(secrets)['workingDir']
-    app.config['path'] =  os.path.dirname(os.path.realpath(__file__)) + '/static/'
-    print(app.config['path'])
+app.config['path'] =  os.path.dirname(os.path.realpath(__file__)) + '/static/'
 
 
 @app.route('/podcast-text/<nb>')
